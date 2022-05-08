@@ -2,6 +2,7 @@ package com.suetham;
 
 import com.suetham.Array.Array;
 import com.suetham.LinkedList.LinkedList;
+import com.suetham.LinkedList.LinkedListWithTail;
 
 public class Main {
 
@@ -15,16 +16,23 @@ public class Main {
         list.pushBack(10);
         list.pushBack(12);
         list.pushBack(14);
-//        list.insert(1, 3);
-//        list.erase(1);
-//        list.popFront();
-//        list.removeValue(3);
+        list.insert(1, 3);
+        list.erase(1);
+        list.popFront();
+        list.removeValue(3);
         list.reverse();
         System.out.println("Head: " + list.front());
         System.out.println("Tail: " + list.back());
         System.out.println("Size: " + list.size());
         System.out.println("Value at 1: " + list.valueAt(0));
         System.out.println("Value at 0 from the end: " + list.valueNFromEnd(6));
+
+        // Linked List With Tail
+        LinkedListWithTail listWTail = new LinkedListWithTail();
+
+        listWTail.pushFront(10);
+
+        System.out.println(listWTail.back());
 
     }
 
