@@ -47,10 +47,18 @@ public class Node {
     
     public void setLeftChild(Node leftChild) {
         this.leftChild = leftChild;
+
+        if (leftChild != null) {
+            leftChild.parent = this;
+        }
     }
     
     public void setRightChild(Node rightChild) {
         this.rightChild = rightChild;
+
+        if (rightChild != null) {
+            rightChild.parent = this;
+        }
     }
     
     public void setElement(Object element) {
