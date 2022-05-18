@@ -1,4 +1,4 @@
-package binarysearchtree;
+package com.suetham.MyBinarySearchTree;
 
 public class BinarySearchTree {
     
