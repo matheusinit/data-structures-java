@@ -110,4 +110,20 @@ public class BinarySearchTree {
 
         return 1 + depth(node.parent());
     }
+
+    public int height(Node node) {
+        if (isExternal(node)) {
+            return 0;
+        }
+
+        int height = 0;
+
+        Node[] children = { node.leftChild(), node.rightChild() };
+
+        for (Node child : children) {
+            height = Math.max(height, height(child));
+        }
+
+        return 1 + height;
+    }
 }
