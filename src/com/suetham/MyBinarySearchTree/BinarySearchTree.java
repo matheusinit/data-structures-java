@@ -89,7 +89,7 @@ public class BinarySearchTree {
             }
         }        
     }
-    
+
     public void inOrder(Node node) {
         if (node.leftChild() != null) {
             inOrder(node.leftChild());
@@ -101,5 +101,13 @@ public class BinarySearchTree {
         if (node.rightChild() != null) {
             inOrder(node.rightChild());
         }
+    }
+
+    public int depth(Node node) {
+        if (node.parent() == null) {
+            return 0;
+        }
+
+        return 1 + depth(node.parent());
     }
 }
