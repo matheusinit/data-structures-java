@@ -7,24 +7,27 @@ public class Teste {
         tree.insert(30);
         
         tree.insert(20);
-        
+
         tree.insert(70);
-        
+
         tree.insert(40);
-        
+
         tree.insert(60);
-        
+
         tree.insert(80);
 
+//        System.out.println(tree.height(tree.root()));
+
+        tree.printTree(tree.root());
         // Removes
         
-        tree.remove(30);
-        
-        tree.remove(40);
-        
-        tree.remove(60);
-        
-        tree.remove(70);
+//        tree.remove(30);
+//
+//        tree.remove(40);
+//
+//        tree.remove(60);
+//
+//        tree.remove(70);
         
 //        tree.insert(24);
 //        
@@ -36,7 +39,7 @@ public class Teste {
 //        
 //        tree.insert(0)
         
-        tree.inOrder(tree.root());
+//        tree.inOrder(tree.root());
     }
 }
 

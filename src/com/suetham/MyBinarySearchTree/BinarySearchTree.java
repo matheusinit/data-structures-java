@@ -1,11 +1,13 @@
 package com.suetham.MyBinarySearchTree;
 
+import java.util.LinkedList;
+
 public class BinarySearchTree {
     
     private Node root;
      
     public BinarySearchTree(Object data) {
-        root = new Node(data);
+    	root = new Node(data);
     }
     
     public boolean isExternal(Node node) {
@@ -112,18 +114,64 @@ public class BinarySearchTree {
     }
 
     public int height(Node node) {
+        if (node == null) {
+            return 0;
+        }
+
         if (isExternal(node)) {
             return 0;
         }
 
-        int height = 0;
+        return 1 + Math.max(height(node.leftChild()), height(node.rightChild()));
+    }
 
-        Node[] children = { node.leftChild(), node.rightChild() };
-
-        for (Node child : children) {
-            height = Math.max(height, height(child));
+    private void printSpace(double n, Node removed) {
+        for (; n > 0; n--) {
+            System.out.print("\t");
         }
 
-        return 1 + height;
+        if (removed == null) {
+            System.out.print(" ");
+        } else {
+            System.out.print(removed.element());
+        }
+    }
+
+    public void printTree(Node node) {
+        LinkedList<Node> treeLevel = new LinkedList<Node>();
+        treeLevel.add(node);
+
+        LinkedList<Node> temp = new LinkedList<Node>();
+
+        int counter = 0;
+        int height = height(node);
+
+        double numberOfElements = (Math.pow(2, (height + 1)) - 1);
+
+        while (counter <= height) {
+            Node removed = treeLevel.removeFirst();
+
+            if (temp.isEmpty()) {
+                printSpace(numberOfElements / Math.pow(2, counter + 1), removed);
+            } else {
+                printSpace(numberOfElements / Math.pow(2, counter), removed);
+            }
+
+            if (removed == null) {
+                temp.add(null);
+                temp.add(null);
+            } else {
+                temp.add(removed.leftChild());
+                temp.add(removed.rightChild());
+            }
+
+            if (treeLevel.isEmpty()) {
+                System.out.println("");
+                System.out.println("");
+                treeLevel = temp;
+                temp = new LinkedList<>();
+                counter++;
+            }
+        }
     }
 }
