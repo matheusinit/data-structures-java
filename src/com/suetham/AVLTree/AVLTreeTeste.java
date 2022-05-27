@@ -11,6 +11,9 @@ public class AVLTreeTeste {
         tree.insert(90);
         tree.insert(60);
         tree.insert(75);
+//
+        tree.remove(90);
+//        tree.remove(80);
 
         tree.show(tree.root());
     }
