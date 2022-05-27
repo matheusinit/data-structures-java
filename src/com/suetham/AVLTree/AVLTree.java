@@ -61,6 +61,8 @@ public class AVLTree {
         node.setBalanceFactor(balanceFactor(node));
 
         updateAncestorBalanceFactor(node, "INSERT");
+
+        rotate(node);
     }
 
     public Node search(Object key, Node node) {
@@ -134,6 +136,100 @@ public class AVLTree {
 
         if (parent.balanceFactor() == 0 && Objects.equals(operation, "REMOVE")) {
             updateAncestorBalanceFactor(parent, operation);
+        }
+    }
+
+    public void rotate(Node node) {
+        Node currentNode = node.parent();
+
+        while (currentNode != null) {
+            int balanceFactor = currentNode.balanceFactor();
+
+            if (balanceFactor < 2 && balanceFactor > -2) {
+                currentNode = currentNode.parent();
+            } else {
+                if (currentNode.balanceFactor() == 2) {
+                    if (currentNode.leftChild().balanceFactor() >= 0) {
+                        rotateRight(currentNode);
+                        updateBalanceFactorAfterRotations(currentNode.parent(), "RIGHT");
+                    } else if (currentNode.leftChild().balanceFactor() < 0) {
+                        rotateLeft(currentNode.leftChild());
+                        updateBalanceFactorAfterRotations(currentNode.leftChild(), "LEFT");
+
+                        rotateRight(currentNode);
+                        updateBalanceFactorAfterRotations(currentNode.parent(), "RIGHT");
+                    }
+                } else if (currentNode.balanceFactor() == -2) {
+                    if (currentNode.rightChild().balanceFactor() <= 0) {
+                        rotateLeft(currentNode);
+                        updateBalanceFactorAfterRotations(currentNode.parent(), "LEFT");
+                    } else if (currentNode.rightChild().balanceFactor() > 0) {
+                        rotateRight(currentNode.rightChild());
+                        updateBalanceFactorAfterRotations(currentNode.rightChild(), "RIGHT");
+
+                        rotateLeft(currentNode);
+                        updateBalanceFactorAfterRotations(currentNode.parent(), "LEFT");
+                    }
+                }
+
+                break;
+            }
+        }
+    }
+
+    private void rotateLeft(Node unbalancedNode) {
+        Node rightSubTree = unbalancedNode.rightChild();
+
+        Node parentOfUnbalancedNode = unbalancedNode.parent();
+        unbalancedNode.setParent(rightSubTree);
+        unbalancedNode.setRightChild(rightSubTree.leftChild());
+
+        rightSubTree.setParent(parentOfUnbalancedNode);
+        if (parentOfUnbalancedNode != null) {
+            parentOfUnbalancedNode.setLeftChild(rightSubTree);
+        } else {
+            this.root = rightSubTree;
+            rightSubTree.setParent(null);
+        }
+
+        rightSubTree.setLeftChild(unbalancedNode);
+    }
+
+    private void rotateRight(Node unbalancedNode) {
+        Node leftSubTree = unbalancedNode.leftChild();
+
+        Node parentOfCurrentNode = unbalancedNode.parent();
+
+        if (parentOfCurrentNode != null) {
+            parentOfCurrentNode.setRightChild(leftSubTree);
+        } else {
+            this.root = leftSubTree;
+            leftSubTree.setParent(null);
+        }
+
+        unbalancedNode.setLeftChild(leftSubTree.rightChild());
+        leftSubTree.setRightChild(unbalancedNode);
+    }
+
+    private void updateBalanceFactorAfterRotations(Node node, String rotationType) {
+        if (Objects.equals(rotationType, "LEFT")) {
+            int nodeBF = node.balanceFactor();
+            int leftNodeBF = node.leftChild().balanceFactor();
+
+            int leftNodeNewBF = leftNodeBF + 1 - Math.min(nodeBF, 0);
+            int nodeNewBF = nodeBF + 1 + Math.max(leftNodeNewBF, 0);
+
+            node.setBalanceFactor(nodeNewBF);
+            node.leftChild().setBalanceFactor(leftNodeNewBF);
+        } else if (Objects.equals(rotationType, "RIGHT")) {
+            int nodeBF = node.balanceFactor();
+            int rightNodeBF = node.rightChild().balanceFactor();
+
+            int rightNodeNewBF = rightNodeBF - 1 - Math.max(nodeBF, 0);
+            int nodeNewBF = nodeBF - 1 + Math.min(rightNodeNewBF, 0);
+
+            node.setBalanceFactor(nodeNewBF);
+            node.rightChild().setBalanceFactor(rightNodeNewBF);
         }
     }
 
