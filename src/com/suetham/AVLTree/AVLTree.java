@@ -139,7 +139,7 @@ public class AVLTree {
 
     private void printSpace(double n, Node node) {
         for (; n > 0; n--) {
-            System.out.print("\t");
+            System.out.print("    ");
         }
 
         if (node == null) {
@@ -164,9 +164,9 @@ public class AVLTree {
             Node current = level.removeFirst();
 
             if (temp.isEmpty()) {
-                printSpace(numberOfElements / Math.pow(2, counter + 1), current);
-            } else {
                 printSpace(numberOfElements / Math.pow(2, counter), current);
+            } else {
+                printSpace(numberOfElements / Math.pow(2, counter - 1), current);
             }
 
             if (current == null) {

@@ -9,8 +9,8 @@ public class AVLTreeTeste {
         tree.insert(12);
         tree.insert(10);
         tree.insert(11);
-        tree.insert(8);
-        tree.insert(5);
+        tree.insert(4);
+        tree.insert(9);
 //        tree.updateBalanceFactor(tree.search(12, tree.root()));
 //        System.out.println(tree.search(25, tree.root()).parent().rightChild().element());
 
