@@ -4,16 +4,16 @@ public class AVLTreeTeste {
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
 
-        tree.insert(50);
+        tree.insert(10);
         tree.insert(20);
-        tree.insert(80);
-        tree.insert(70);
-        tree.insert(90);
-        tree.insert(60);
-        tree.insert(75);
-//
-        tree.remove(90);
-//        tree.remove(80);
+        tree.insert(30);
+        tree.insert(40);
+        tree.insert(50);
+        tree.insert(5);
+        tree.insert(25);
+
+        tree.remove(50);
+
 
         tree.show(tree.root());
     }

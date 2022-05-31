@@ -14,12 +14,14 @@ public class Node {
     public Node(Object element, Node parent) {
         this.element = element;
         this.parent = parent;
+        this.balanceFactor = 0;
     }
 
     public Node(Object element, Node leftChild, Node rightChild) {
         this.element = element;
         this.leftChild = leftChild;
         this.rightChild = rightChild;
+        this.balanceFactor = 0;
     }
 
     public Node(Object element, Node parent, Node rightChild, Node leftChild) {
@@ -27,6 +29,7 @@ public class Node {
         this.parent = parent;
         this.leftChild = leftChild;
         this.rightChild = rightChild;
+        this.balanceFactor = 0;
     }
 
     public Object element() {
