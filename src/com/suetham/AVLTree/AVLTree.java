@@ -47,6 +47,24 @@ public class AVLTree {
 
         return depth(node.parent()) + 1;
     }
+    
+    public Node nextInOrder(Node node) {
+        if (node.parent().leftChild() == node) {
+            node = node.leftChild();
+
+            while (node.leftChild() != null) {
+                node = node.leftChild();
+            }
+
+            return node;
+        }
+        node = node.rightChild();
+        while (node.leftChild() != null) {
+            node = node.leftChild();
+        }
+
+        return node;
+    }
 
     public void insert(Object key) {
         Node parentOfNewNode = search(key, this.root);
@@ -63,43 +81,21 @@ public class AVLTree {
 
     public void remove(Object key) {
         Node nodeToRemove = search(key, root);
-
-//        Node currentNode = nodeToRemove;
-//
-//        int determinant = 0;
-//
-//        while (true) {
-//            if (currentNode.parent() == null) {
-//                break;
-//            }
-//
-//            if (currentNode.parent().leftChild() == currentNode) {
-//                determinant = -1;
-//            } else if (currentNode.parent().rightChild() == currentNode) {
-//                determinant = 1;
-//            }
-//
-//            if (nodeToRemove.children() < 2) {
-//                currentNode.parent().setBalanceFactor(currentNode.parent().balanceFactor() + determinant);
-//            } else {
-//                currentNode.setBalanceFactor(currentNode.balanceFactor() + determinant);
-//            }
-//
-//            if (currentNode.parent().balanceFactor() != 0) {
-//                break;
-//            }
-//
-//            currentNode = currentNode.parent();
-//        }
-//
-//        if (nodeToRemove.children() == 2) {
-//            nodeToRemove.rightChild().setBalanceFactor(nodeToRemove.balanceFactor());
-//        }
-
-        updateAncestorBalanceFactor(nodeToRemove, "REMOVE");
+        Node nodeToRemoveInitial = nodeToRemove;
 
         int parent = (int) nodeToRemove.parent().element();
         int toRemove = (int) nodeToRemove.element();
+
+        if (hasLeft(nodeToRemove) && hasRight(nodeToRemove)) {
+            nodeToRemove = nextInOrder(nodeToRemove);
+        }
+
+        if (key == (Object) 30) {
+            System.out.println("parent: " + parent);
+            System.out.println("nodeToRemove: " + toRemove);
+        }
+
+        updateAncestorBalanceFactor(nodeToRemove, "REMOVE");
 
         if (hasLeft(nodeToRemove) && !hasRight(nodeToRemove)) {
             if (parent >= toRemove) {
@@ -127,8 +123,15 @@ public class AVLTree {
             if (parent >= toRemove) {
                 nodeToRemove.parent().setLeftChild(null);
             } else if (parent < toRemove) {
+                checkForElementSwap(nodeToRemoveInitial, nodeToRemove);
                 nodeToRemove.parent().setRightChild(null);
             }
+        }
+    }
+
+    private void checkForElementSwap(Node primaryNode, Node secondaryNode) {
+        if (primaryNode.element() != secondaryNode.element()) {
+            primaryNode.setElement(secondaryNode.element());
         }
     }
 
@@ -202,7 +205,6 @@ public class AVLTree {
 
         if (node.balanceFactor() == 2 || node.balanceFactor() == -2) {
             rotate(node);
-            return;
         }
 
         if (parent == null) {
@@ -228,28 +230,19 @@ public class AVLTree {
                 determinant = 1;
             }
 
-            if (node.children() < 2) {
-                node.parent().setBalanceFactor(node.parent().balanceFactor() + determinant);
-            } else {
-                node.setBalanceFactor(node.balanceFactor() + determinant);
-            }
+            node.parent().setBalanceFactor(node.parent().balanceFactor() + determinant);
 
-            if (node.children() == 2) {
-                node.rightChild().setBalanceFactor(node.balanceFactor());
+            if (parent.balanceFactor() >= 2 || parent.balanceFactor() <= -2) {
+                parent = rotate(node.parent());
             }
-
-            if (parent.balanceFactor() == 2 || parent.balanceFactor() == -2) {
-                rotate(node.parent());
-                return;
-            }
-
+            
             if (node.parent().balanceFactor() == 0) {
                 updateAncestorBalanceFactor(parent, operation);
             }
         }
     }
 
-    public void rotate(Node node) {
+    public Node rotate(Node node) {
         Node currentNode = node;
 
         while (currentNode != null) {
@@ -285,6 +278,8 @@ public class AVLTree {
                 break;
             }
         }
+
+        return currentNode.parent();
     }
 
     private void rotateLeft(Node unbalancedNode) {
