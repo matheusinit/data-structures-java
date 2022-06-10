@@ -366,9 +366,9 @@ public class AVLTree {
             Node current = level.removeFirst();
 
             if (temp.isEmpty()) {
-                printSpace(numberOfElements / Math.pow(2, counter), current);
+                printSpace(numberOfElements / Math.pow(2, counter + 1), current);
             } else {
-                printSpace(numberOfElements / Math.pow(2, counter - 1), current);
+                printSpace(numberOfElements / Math.pow(2, counter), current);
             }
 
             if (current == null) {
