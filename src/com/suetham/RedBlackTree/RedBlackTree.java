@@ -111,23 +111,23 @@ public class RedBlackTree {
                 }
             } else if (uncle.color() == "Black") {
                 if (node.parent().leftChild() == node && grandparent.leftChild() == node.parent()) {
-//                    System.out.println("Rotação direita simples");
+                    // Rotação direita simples
                     rotateRight(grandparent);
                     grandparent.setColor("Red");
                     node.parent().setColor("Black");
                 } else if (node.parent().rightChild() == node && grandparent.rightChild() == node.parent()) {
-//                    System.out.println("Rotação esquerda simples");
+                    // Rotação esquerda simples
                     rotateLeft(grandparent);
                     grandparent.setColor("Red");
                     node.parent().setColor("Black");
                 } else if (node.parent().leftChild() == node && grandparent.rightChild() == node.parent()) {
-//                    System.out.println("Rotação esquerda dupla");
+                    // Rotação esquerda dupla
                     rotateRight(node.parent());
                     rotateLeft(grandparent);
                     grandparent.setColor("Red");
                     node.setColor("Black");
                 } else if (node.parent().rightChild() == node && grandparent.leftChild() == node.parent()) {
-//                    System.out.println("Rotação direita dupla");
+                    // Rotação direita dupla
                     rotateLeft(node.parent());
                     rotateRight(grandparent);
                     grandparent.setColor("Red");
@@ -214,10 +214,6 @@ public class RedBlackTree {
         if (isExternal(node)) {
             return node;
         }
-
-//        if (node.element() == null) {
-//            return node.parent();
-//        }
 
         Integer keyInt = (Integer) key;
         Integer nodeValueInt = (Integer) node.element();
