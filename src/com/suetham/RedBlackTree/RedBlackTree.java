@@ -1,7 +1,6 @@
 package com.suetham.RedBlackTree;
 
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class RedBlackTree {
     private Node root;
@@ -257,7 +256,7 @@ public class RedBlackTree {
 
         LinkedList<Node> temp = new LinkedList<>();
 
-        int height = height(node) + 1;
+        int height = height(node);
         int counter = 0;
 
         double numberOfElements = Math.pow(2, height + 1) - 1;
