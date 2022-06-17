@@ -90,6 +90,7 @@ public class RedBlackTree {
 
                 if (grandparent.parent() != null) {
                     grandparent.setColor("Red");
+                    fixTree(grandparent);
                 }
             } else if (uncle.color() == "Black") {
                 if (node.parent().leftChild() == node && grandparent.leftChild() == node.parent()) {
