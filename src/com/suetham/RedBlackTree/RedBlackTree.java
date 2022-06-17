@@ -1,9 +1,9 @@
 package com.suetham.RedBlackTree;
 
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class RedBlackTree {
+
     private Node root;
     private Node leaf;
 
@@ -50,24 +50,6 @@ public class RedBlackTree {
         }
 
         return depth(node.parent()) + 1;
-    }
-
-    public Node nextInOrder(Node node) {
-        if (node.parent().leftChild() == node) {
-            node = node.leftChild();
-
-            while (node.leftChild() != null) {
-                node = node.leftChild();
-            }
-
-            return node;
-        }
-        node = node.rightChild();
-        while (node.leftChild() != null) {
-            node = node.leftChild();
-        }
-
-        return node;
     }
 
     public void insert(Object key) {
@@ -175,9 +157,86 @@ public class RedBlackTree {
         unbalancedNode.setLeftChild(leftSubTree.rightChild());
         leftSubTree.setRightChild(unbalancedNode);
     }
+   
+    public Node nextInOrder(Node node) {
+//        if (node.parent().leftChild() == node) {
+//            node = node.rightChild();
+//            
+//            while (node.leftChild() != null && node.leftChild().element() != null) {
+//                node = node.leftChild();
+//            }
+//
+//            return node;
+//        }
+        node = node.rightChild();
+        while (node.leftChild() != null && node.leftChild().element() != null) {
+            node = node.leftChild();
+        }
 
+        return node;
+    }
+    
     public void remove(Object key) {
+        Node nodeToRemove = search(key, root);
+        Node nodeToRemoveInitial = nodeToRemove;
 
+        int parent = (int) nodeToRemove.parent().element();
+        int toRemove = (int) nodeToRemove.element();
+
+//        System.out.println(nextInOrder(nodeToRemove).element());
+//        if (hasLeft(nodeToRemove) && hasRight(nodeToRemove)) {
+//            nodeToRemove = nextInOrder(nodeToRemove);
+//            nodeToRemoveInitial.setElement(nodeToRemove.element());
+//        }
+
+        if (hasLeft(nodeToRemove) && !hasRight(nodeToRemove)) {
+            if (parent >= toRemove) {
+                nodeToRemove.parent().setLeftChild(nodeToRemove.leftChild());
+            } else if (parent < toRemove) {
+                nodeToRemove.parent().setRightChild(nodeToRemove.leftChild());
+            }
+        } else if (!hasLeft(nodeToRemove) && hasRight(nodeToRemove)) {
+            if (parent >= toRemove) {
+                nodeToRemove.parent().setLeftChild(nodeToRemove.rightChild());
+            } else if (parent < toRemove) {
+                nodeToRemove.parent().setRightChild(nodeToRemove.rightChild());
+            }
+        } else if (hasLeft(nodeToRemove) && hasRight(nodeToRemove)) {
+            nodeToRemove = nextInOrder(nodeToRemove);
+           
+            
+            if (parent >= toRemove) {
+                nodeToRemove.parent().setLeftChild(nodeToRemove.rightChild());
+                nodeToRemove.parent().leftChild().setLeftChild(nodeToRemove.leftChild());
+            } else if (parent < toRemove) {
+                nodeToRemove.parent().setRightChild(nodeToRemove.rightChild());
+                nodeToRemove.parent().rightChild().setLeftChild(nodeToRemove.leftChild());
+            }
+
+            nodeToRemove.setRightChild(null);
+        } else {
+            if (parent >= toRemove) {
+                nodeToRemove.parent().setLeftChild(null);
+            } else if (parent < toRemove) {
+                nodeToRemove.parent().setRightChild(null);
+            }
+        }
+    }
+    
+    private void fixTreeAfterRemoval(Node nodeToRemove, Node successorNode) {
+        if (nodeToRemove.color() == "Red" && successorNode.color() == "Red") {
+            // Situação 1
+            return;
+        } else if (nodeToRemove.color() == "Black" && successorNode.color() == "Red") {
+            // Situação 2
+            nodeToRemove.setElement(successorNode.element());
+        } else if (nodeToRemove.color() == "Black" && successorNode.color() == "Black") {
+            // Situação 3
+            // Casos: 1, 2a, 2b, 3, 4 
+        } else if (nodeToRemove.color() == "Red" && successorNode.color() == "Black") {
+            // Situação 4
+            // Casos: 1, 2a, 2b, 3, 4
+        }
     }
 
     private void statusNode(Node node) {
@@ -257,7 +316,7 @@ public class RedBlackTree {
 
         LinkedList<Node> temp = new LinkedList<>();
 
-        int height = height(node) + 1;
+        int height = height(node);
         int counter = 0;
 
         double numberOfElements = Math.pow(2, height + 1) - 1;

@@ -20,6 +20,9 @@ public class RedBlackTreeTeste {
 
         tree.insert(15);
         tree.insert(20);
+        
+        tree.remove(3);
+//        tree.remove(25);
 
         tree.show(tree.root());
     }
