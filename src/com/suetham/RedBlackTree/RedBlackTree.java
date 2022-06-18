@@ -180,6 +180,7 @@ public class RedBlackTree {
     public void remove(Object key) {
         Node nodeToRemove = search(key, root);
         Node nodeToRemoveInitial = nodeToRemove;
+        Node successor = nodeToRemove;
 
         int parent = (int) nodeToRemove.parent().element();
         int toRemove = (int) nodeToRemove.element();
@@ -191,30 +192,33 @@ public class RedBlackTree {
 //        }
 
         if (hasLeft(nodeToRemove) && !hasRight(nodeToRemove)) {
+            successor = nodeToRemove.leftChild();
+
             if (parent >= toRemove) {
                 nodeToRemove.parent().setLeftChild(nodeToRemove.leftChild());
             } else if (parent < toRemove) {
                 nodeToRemove.parent().setRightChild(nodeToRemove.leftChild());
             }
         } else if (!hasLeft(nodeToRemove) && hasRight(nodeToRemove)) {
+            successor = nodeToRemove.rightChild();
             if (parent >= toRemove) {
                 nodeToRemove.parent().setLeftChild(nodeToRemove.rightChild());
             } else if (parent < toRemove) {
                 nodeToRemove.parent().setRightChild(nodeToRemove.rightChild());
             }
         } else if (hasLeft(nodeToRemove) && hasRight(nodeToRemove)) {
-            nodeToRemove = nextInOrder(nodeToRemove);
-           
-            
-            if (parent >= toRemove) {
-                nodeToRemove.parent().setLeftChild(nodeToRemove.rightChild());
-                nodeToRemove.parent().leftChild().setLeftChild(nodeToRemove.leftChild());
-            } else if (parent < toRemove) {
-                nodeToRemove.parent().setRightChild(nodeToRemove.rightChild());
-                nodeToRemove.parent().rightChild().setLeftChild(nodeToRemove.leftChild());
-            }
+            successor = nextInOrder(nodeToRemove);
 
-            nodeToRemove.setRightChild(null);
+            toRemove = (int) successor.element();
+            parent = (int) successor.parent().element();
+
+            nodeToRemove.setElement(successor.element());
+
+            if (parent >= toRemove) {
+                successor.parent().setLeftChild(null);
+            } else if (parent < toRemove) {
+                successor.parent().setRightChild(null);
+            }
         } else {
             if (parent >= toRemove) {
                 nodeToRemove.parent().setLeftChild(null);
@@ -222,22 +226,100 @@ public class RedBlackTree {
                 nodeToRemove.parent().setRightChild(null);
             }
         }
+
+        System.out.println("to remove: " + nodeToRemove.element());
+        System.out.println("successor: " + successor.element());
+
+        if (nodeToRemove.color() == "Black" && successor.color() == "Black") {
+            // Situação 3
+            fixTreeAfterRemoval(successor);
+        } else if (nodeToRemove.color() == "Red" && successor.color() == "Black") {
+            // Situação 4
+            successor.setColor("Red");
+            fixTreeAfterRemoval(successor);
+        }
     }
     
-    private void fixTreeAfterRemoval(Node nodeToRemove, Node successorNode) {
-        if (nodeToRemove.color() == "Red" && successorNode.color() == "Red") {
-            // Situação 1
-            return;
-        } else if (nodeToRemove.color() == "Black" && successorNode.color() == "Red") {
-            // Situação 2
-            nodeToRemove.setElement(successorNode.element());
-        } else if (nodeToRemove.color() == "Black" && successorNode.color() == "Black") {
-            // Situação 3
-            // Casos: 1, 2a, 2b, 3, 4 
-        } else if (nodeToRemove.color() == "Red" && successorNode.color() == "Black") {
-            // Situação 4
-            // Casos: 1, 2a, 2b, 3, 4
+    private void fixTreeAfterRemoval(Node node) {
+        Node brother = null;
+        // Situação 3 e 4
+        // Casos: 1, 2a, 2b, 3, 4
+
+        if (node.parent().leftChild() == node) {
+            System.out.println("Is left child");
+            brother = node.parent().rightChild();
+        } else if (node.parent().rightChild() == node) {
+            System.out.println("Is right child");
+            brother = node.parent().leftChild();
         }
+
+        // Caso 1
+        if (brother.color() == "Red" && node.parent().color() == "Black") {
+            System.out.println("Caso 1");
+            node.setDoubleBlack(true);
+
+            if (node.parent().leftChild() == node) {
+                rotateLeft(node.parent());
+            } else if (node.parent().rightChild() == node) {
+                rotateRight(node.parent());
+            }
+
+            brother.setColor("Black");
+            node.parent().setColor("Red");
+            fixTreeAfterRemoval(node);
+        } else if (brother.color() == "Black") {
+            if (node.parent().color() == "Black" && brother.leftChild().color() == "Black" && brother.rightChild().color() == "Black") {
+                // caso 2a
+                System.out.println("Caso 2a");
+                brother.setColor("Red");
+                node.setDoubleBlack(false);
+                if (node.parent().parent() != null) {
+                    node.parent().setDoubleBlack(true);
+                    fixTreeAfterRemoval(node.parent());
+                }
+            } else if (node.parent().color() == "Red" && brother.leftChild().color() == "Black" && brother.rightChild().color() == "Black") {
+                // caso 2b
+                System.out.println("Caso 2b");
+                brother.setColor("Red");
+                node.parent().setColor("Black");
+                node.setDoubleBlack(false);
+            } else if (brother.leftChild().color() == "Red" && brother.rightChild().color() == "Black" && node.parent().leftChild() == node) {
+                // caso 3
+                System.out.println("Caso 3");
+                String color = brother.color();
+                brother.setColor(brother.leftChild().color());
+                brother.leftChild().setColor(color);
+                rotateRight(brother);
+                fixTreeAfterRemoval(node);
+            } else if (brother.leftChild().color() == "Black" && brother.rightChild().color() == "Red") {
+                // caso 3 espelhado
+                System.out.println("Caso 3 - espelhado");
+                String color = brother.color();
+                brother.setColor(brother.rightChild().color());
+                brother.rightChild().setColor(color);
+                rotateLeft(brother);
+                fixTreeAfterRemoval(node);
+            } else if (brother.rightChild().color() == "Red") {
+                // caso 4
+                System.out.println("Caso 4");
+                String color = node.parent().color();
+                rotateLeft(node.parent());
+                node.setDoubleBlack(false);
+                node.parent().setColor("Black");
+                brother.rightChild().setColor("Black");
+                brother.setColor(color);
+            } else if (brother.leftChild().color() == "Red") {
+                // caso 4 espelhado
+                System.out.println("Caso 4 -- Espelhado");
+                String color = node.parent().color();
+                rotateRight(node.parent());
+                node.setDoubleBlack(false);
+                node.parent().setColor("Black");
+                brother.leftChild().setColor("Black");
+                brother.setColor(color);
+            }
+        }
+
     }
 
     private void statusNode(Node node) {
@@ -306,7 +388,11 @@ public class RedBlackTree {
             if (node.element() == null) {
                 System.out.print("N<" + node.color().charAt(0) + ">");
             } else {
-                System.out.print(node.element() + "<" + node.color().charAt(0) + ">");
+                if (node.isDoubleBlack()) {
+                    System.out.print(node.element() + "<D" + node.color().charAt(0) + ">");
+                } else {
+                    System.out.print(node.element() + "<" + node.color().charAt(0) + ">");
+                }
             }
         }
     }

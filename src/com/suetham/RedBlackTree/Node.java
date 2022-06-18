@@ -9,6 +9,8 @@ public class Node {
     private Node rightChild;
     private boolean isBlack;
 
+    private boolean isDoubleBlack = false;
+
     public Node(Object element) {
         this.element = element;
         this.isBlack = true;
@@ -130,6 +132,9 @@ public class Node {
             }
 
             isBlack = false;
+            if (isDoubleBlack) {
+                isDoubleBlack = false;
+            }
         } else if (Objects.equals(color, "Black")) {
             if (isBlack) {
                 return;
@@ -137,5 +142,13 @@ public class Node {
 
             isBlack = true;
         }
+    }
+
+    public boolean isDoubleBlack() {
+        return isDoubleBlack && isBlack;
+    }
+
+    public void setDoubleBlack(boolean value) {
+        isDoubleBlack = value;
     }
 }
