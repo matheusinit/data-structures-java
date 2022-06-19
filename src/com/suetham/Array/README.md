@@ -92,4 +92,14 @@ ser gerada, invés disso é utilizado *Referências (Reference)*.
 
 **Inserção**
 
+A complexidade da inserção depende do caso. Inserção no final do array
+pode ser O(1) (*constante*), ou O(n), em caso de precisar aumentar o
+tamanho do array em inserção.
+
+Inserção no meio ou no início do Array é O(n), pois é preciso que os
+itens sejam movidos um *index* a mais.
+
 **Remoção**
+
+Remoção no final é O(1). Mas nos casos do início e do meio é O(n) pelos
+mesmos motivos que a da inserção.
