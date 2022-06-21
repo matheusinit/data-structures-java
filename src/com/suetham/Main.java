@@ -3,6 +3,7 @@ package com.suetham;
 import com.suetham.Array.Array;
 import com.suetham.LinkedList.LinkedList;
 import com.suetham.LinkedList.LinkedListWithTail;
+import com.suetham.Queue.LinkedList.Queue;
 
 public class Main {
 
@@ -52,7 +53,22 @@ public class Main {
         array.print();
     }
 
+    public static void testQueue() {
+        Queue queue = new Queue();
+
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+        queue.enqueue(4);
+        queue.enqueue(5);
+
+        System.out.println("Removido: " + queue.dequeue());
+        System.out.println("Removido: " + queue.dequeue());
+
+        queue.show();
+    }
+
     public static void main(String[] args) {
-        testLinkedList();
+        testQueue();
     }
 }
