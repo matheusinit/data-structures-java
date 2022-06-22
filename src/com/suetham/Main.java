@@ -1,7 +1,7 @@
 package com.suetham;
 
 import com.suetham.Array.Array;
-import com.suetham.CircularBuffer.Array.CircularBuffer;
+import com.suetham.CircularBuffer.LinkedList.CircularBuffer;
 import com.suetham.LinkedList.LinkedList;
 import com.suetham.LinkedList.LinkedListWithTail;
 //import com.suetham.Queue.LinkedList.Queue;
@@ -88,25 +88,45 @@ public class Main {
     }
 
     public static void testCircularBufferArray() throws Exception {
-        CircularBuffer buffer = new CircularBuffer(6);
+//        CircularBuffer buffer = new CircularBuffer(6);
+//
+//        buffer.enqueue(1);
+//        buffer.enqueue(2);
+//        buffer.enqueue(3);
+//        buffer.enqueue(4);
+//        buffer.enqueue(5);
+//        buffer.enqueue(6);
+//
+//        System.out.println("Full: " + buffer.full());
+//
+//        buffer.dequeue();
+//        buffer.dequeue();
+//
+//        buffer.enqueue(7);
+//
+//        buffer.dequeue();
+//
+//        System.out.println("Full: " + buffer.full());
+//        System.out.println("Empty: " + buffer.empty());
+//
+//        buffer.show();
+
+        CircularBuffer buffer = new CircularBuffer();
+
+        System.out.println("Empty: " + buffer.empty());
 
         buffer.enqueue(1);
         buffer.enqueue(2);
         buffer.enqueue(3);
+
+        System.out.println("Removido: " + buffer.dequeue());
+        System.out.println("Removido: " + buffer.dequeue());
+
         buffer.enqueue(4);
         buffer.enqueue(5);
-        buffer.enqueue(6);
 
-        System.out.println("Full: " + buffer.full());
+        System.out.println("Removido: " + buffer.dequeue());
 
-        buffer.dequeue();
-        buffer.dequeue();
-
-        buffer.enqueue(7);
-
-        buffer.dequeue();
-
-        System.out.println("Full: " + buffer.full());
         System.out.println("Empty: " + buffer.empty());
 
         buffer.show();
