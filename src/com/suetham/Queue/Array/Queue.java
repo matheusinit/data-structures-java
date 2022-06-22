@@ -1,10 +1,10 @@
 package com.suetham.Queue.Array;
 
 public class Queue implements IQueue {
-    public Object[] array;
-    public int head;
-    public int tail;
-    public int size;
+    private Object[] array;
+    private int head;
+    private int tail;
+    private int size;
 
     public Queue(int size) {
         array = new Object[size];
