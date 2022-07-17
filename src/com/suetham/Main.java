@@ -2,6 +2,8 @@ package com.suetham;
 
 import com.suetham.Array.Array;
 import com.suetham.CircularBuffer.LinkedList.CircularBuffer;
+import com.suetham.Graph.Graph;
+import com.suetham.Graph.Vertice;
 import com.suetham.LinkedList.LinkedList;
 import com.suetham.LinkedList.LinkedListWithTail;
 //import com.suetham.Queue.LinkedList.Queue;
@@ -132,7 +134,28 @@ public class Main {
         buffer.show();
     }
 
+    public static void testGraph() {
+        Graph graph = new Graph();
+
+        Vertice vertice = new Vertice("v1");
+        Vertice vertice2 = new Vertice("v2");
+        Vertice vertice3 = new Vertice("v3");
+        Vertice vertice4 = new Vertice("v4");
+        Vertice vertice5 = new Vertice("v5");
+
+        graph.inserirAresta(vertice, vertice2, 10);
+        graph.inserirAresta(vertice3, vertice4, 20);
+        graph.inserirAresta(vertice, vertice3, 5);
+        graph.inserirAresta(vertice2, vertice4, 30);
+
+        graph.removeVertice(vertice3);
+
+//        System.out.println(graph.éAdjacente(vertice, vertice));
+
+        graph.printGraph();
+    }
+
     public static void main(String[] args) throws Exception {
-        testCircularBufferArray();
+        testGraph();
     }
 }
