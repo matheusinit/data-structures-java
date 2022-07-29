@@ -83,8 +83,8 @@ public class Graph implements IGraph {
         return vertice;
     }
 
-    public Aresta inserirAresta(Vertice verticeInicio, Vertice verticeFim, Object value) {
-        Aresta aresta = new Aresta(verticeInicio, verticeFim, value, false);
+    public Aresta inserirAresta(Vertice verticeInicio, Vertice verticeFim, Object value, boolean direcionada) {
+        Aresta aresta = new Aresta(verticeInicio, verticeFim, value, direcionada);
 
         int count = 0;
 
@@ -118,14 +118,18 @@ public class Graph implements IGraph {
             }
 
             novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] = aresta;
-            novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
+            if (direcionada) {
+                novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
+            }
 
             matriz = novaMatriz;
 
             qtdVertices += count;
         } else {
             matriz[indexOfVerticeInicio][indexOfVerticeFim] = aresta;
-            matriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
+            if (direcionada) {
+                matriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
+            }
         }
 
         return aresta;
