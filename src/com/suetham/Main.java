@@ -2,12 +2,16 @@ package com.suetham;
 
 import com.suetham.Array.Array;
 import com.suetham.CircularBuffer.LinkedList.CircularBuffer;
+import com.suetham.Dijkstra.Dijkstra;
+import com.suetham.Graph.Aresta;
 import com.suetham.Graph.Graph;
 import com.suetham.Graph.Vertice;
 import com.suetham.LinkedList.LinkedList;
 import com.suetham.LinkedList.LinkedListWithTail;
 //import com.suetham.Queue.LinkedList.Queue;
 import com.suetham.Queue.Array.Queue;
+
+import java.util.List;
 
 public class Main {
 
@@ -137,25 +141,63 @@ public class Main {
     public static void testGraph() {
         Graph graph = new Graph();
 
-        Vertice vertice = new Vertice("v1");
-        Vertice vertice2 = new Vertice("v2");
-        Vertice vertice3 = new Vertice("v3");
-        Vertice vertice4 = new Vertice("v4");
-        Vertice vertice5 = new Vertice("v5");
+        Vertice verticeA = new Vertice("A");
+        Vertice verticeB = new Vertice("B");
+        Vertice verticeC = new Vertice("C");
+        Vertice verticeD = new Vertice("D");
+        Vertice verticeE = new Vertice("E");
+        Vertice verticeF = new Vertice("F");
 
-        graph.inserirAresta(vertice, vertice2, 10);
-        graph.inserirAresta(vertice3, vertice4, 20);
-        graph.inserirAresta(vertice, vertice3, 5);
-        graph.inserirAresta(vertice2, vertice4, 30);
-
-        graph.removeVertice(vertice3);
+        graph.inserirAresta(verticeA, verticeB, 2, true);
+        graph.inserirAresta(verticeA, verticeC, 4, true);
+        graph.inserirAresta(verticeB, verticeC, 3, true);
+        graph.inserirAresta(verticeB, verticeE, 5, true);
+        graph.inserirAresta(verticeB, verticeD, 1, false);
+        graph.inserirAresta(verticeC, verticeD, 2, true);
+        graph.inserirAresta(verticeD, verticeE, 1, true);
+        graph.inserirAresta(verticeD, verticeF, 4, true);
+        graph.inserirAresta(verticeE, verticeF, 2, true);
 
 //        System.out.println(graph.éAdjacente(vertice, vertice));
 
-        graph.printGraph();
+        List<Aresta> arestas = graph.arestasIncidentes(verticeA);
+
+        for (Aresta aresta: arestas) {
+            System.out.println(aresta.getVerticeInicio() + " " + aresta.getVerticeFim());
+        }
+
+        System.out.println(graph.éAdjacente(verticeB, verticeF));
+
+//        graph.printGraph();
+    }
+
+    public static void testDijkstra() {
+        Graph graph = new Graph();
+
+        Vertice verticeA = new Vertice("A");
+        Vertice verticeB = new Vertice("B");
+        Vertice verticeC = new Vertice("C");
+        Vertice verticeD = new Vertice("D");
+        Vertice verticeE = new Vertice("E");
+        Vertice verticeF = new Vertice("F");
+
+        graph.inserirAresta(verticeA, verticeB, 2, true);
+        graph.inserirAresta(verticeA, verticeC, 4, true);
+        graph.inserirAresta(verticeB, verticeC, 3, true);
+        graph.inserirAresta(verticeB, verticeE, 5, true);
+        graph.inserirAresta(verticeB, verticeD, 1, true);
+        graph.inserirAresta(verticeC, verticeD, 2, true);
+        graph.inserirAresta(verticeD, verticeE, 1, true);
+        graph.inserirAresta(verticeD, verticeF, 4, true);
+        graph.inserirAresta(verticeE, verticeF, 2, true);
+
+        Dijkstra dijkstra = new Dijkstra(graph);
+
+        dijkstra.handle(verticeA);
     }
 
     public static void main(String[] args) throws Exception {
-        testGraph();
+//        testGraph();
+        testDijkstra();
     }
 }

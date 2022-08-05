@@ -118,7 +118,7 @@ public class Graph implements IGraph {
             }
 
             novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] = aresta;
-            if (direcionada) {
+            if (!direcionada) {
                 novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
             }
 
@@ -127,7 +127,7 @@ public class Graph implements IGraph {
             qtdVertices += count;
         } else {
             matriz[indexOfVerticeInicio][indexOfVerticeFim] = aresta;
-            if (direcionada) {
+            if (!direcionada) {
                 matriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
             }
         }
@@ -212,8 +212,18 @@ public class Graph implements IGraph {
             for (int j = 0; j < matriz[i].length; j++) {
                 Aresta aresta = matriz[i][j];
 
-                if (aresta.getVerticeInicio() == vertice || aresta.getVerticeFim() == vertice) {
-                    arestas.add(aresta);
+                if (aresta == null) {
+                    continue;
+                }
+
+                if (aresta.getDirecionado()) {
+                    if (aresta.getVerticeInicio() == vertice) {
+                        arestas.add(aresta);
+                    }
+                } else {
+                    if (aresta.getVerticeInicio() == vertice || aresta.getVerticeFim() == vertice) {
+                        arestas.add(aresta);
+                    }
                 }
             }
         }
@@ -239,7 +249,7 @@ public class Graph implements IGraph {
 
                 Vertice vertice1 = aresta.getVerticeInicio();
                 Vertice vertice2 = aresta.getVerticeFim();
-                System.out.println(aresta.getValue() + " " + vertice1.getElement() + " " + vertice2.getElement());
+                System.out.println(aresta.getValue() + " " + vertice1.getElement() + " " + vertice2.getElement() + " " + aresta.getDirecionado());
             }
         }
     }

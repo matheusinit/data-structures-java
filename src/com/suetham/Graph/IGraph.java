@@ -9,7 +9,7 @@ public interface IGraph {
     void substituir(Vertice vertice, Object element);
     void substituir(Aresta aresta, Object value);
     Vertice inserirVertice(Object element);
-    Aresta inserirAresta(Vertice vertice1, Vertice vertice2, Object value);
+    Aresta inserirAresta(Vertice vertice1, Vertice vertice2, Object value, boolean direcionada);
     Vertice removeVertice(Vertice vertice);
     Aresta removeAresta(Aresta aresta);
     List<Vertice> vertices();
