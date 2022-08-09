@@ -1,16 +1,17 @@
 package com.suetham.Graph;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 public class Graph implements IGraph {
-    private Aresta[][] matriz;
+    private List[][] matriz;
     private final List<Vertice> vertices;
 
     private int qtdVertices;
 
     public Graph() {
-        matriz = new Aresta[0][0];
+        matriz = new ArrayList[0][0];
         vertices = new Vector<>();
         qtdVertices = 0;
     }
@@ -38,13 +39,13 @@ public class Graph implements IGraph {
             for (int j = 0; j < matriz[i].length; j++) {
                 if (i == j) continue;
 
-                Aresta aresta = matriz[i][j];
+                List listOfArestas = matriz[i][j];
 
-                if (aresta == null) continue;
+                if (listOfArestas == null) continue;
 
-                if (aresta.getVerticeInicio() == vertice1 && aresta.getVerticeFim() == vertice2) {
+                if (listOfArestas.contains(vertice1) && listOfArestas.contains(vertice2)) {
                     return true;
-                } else if (aresta.getVerticeInicio() == vertice2 && aresta.getVerticeFim() == vertice1) {
+                } else if (listOfArestas.contains(vertice2) && listOfArestas.contains(vertice1)) {
                     return true;
                 }
             }
@@ -64,7 +65,9 @@ public class Graph implements IGraph {
     public Vertice inserirVertice(Object element) {
         Vertice vertice = new Vertice(element);
 
-        Aresta[][] novaMatriz = new Aresta[qtdVertices + 1][qtdVertices + 1];
+        // nova
+//        Aresta[][] novaMatriz = new Aresta[qtdVertices + 1][qtdVertices + 1];
+        List[][] novaMatriz = new ArrayList[qtdVertices + 1][qtdVertices + 1];
 
         if (matriz.length != 0) {
             for (int i = 0; i < matriz.length; i++) {
@@ -105,7 +108,7 @@ public class Graph implements IGraph {
 
 
         if (count > 0) {
-            Aresta[][] novaMatriz = new Aresta[matriz.length + count][matriz.length + count];
+            List[][] novaMatriz = new List[matriz.length + count][matriz.length + count];
 
             if (matriz.length != 0) {
                 for (int i = 0; i < matriz.length; i++) {
@@ -117,18 +120,34 @@ public class Graph implements IGraph {
                 }
             }
 
-            novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] = aresta;
+            if (novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] == null) {
+                novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] = new ArrayList<Aresta>();
+            }
+
+            novaMatriz[indexOfVerticeInicio][indexOfVerticeFim].add(aresta);
             if (!direcionada) {
-                novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
+                if (novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] == null) {
+                    novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] = new ArrayList<Aresta>();
+                }
+
+                novaMatriz[indexOfVerticeFim][indexOfVerticeInicio].add(aresta);
             }
 
             matriz = novaMatriz;
 
             qtdVertices += count;
         } else {
-            matriz[indexOfVerticeInicio][indexOfVerticeFim] = aresta;
+            if (matriz[indexOfVerticeInicio][indexOfVerticeFim] == null) {
+                matriz[indexOfVerticeInicio][indexOfVerticeFim] = new ArrayList<Aresta>();
+            }
+
+            matriz[indexOfVerticeInicio][indexOfVerticeFim].add(aresta);
             if (!direcionada) {
-                matriz[indexOfVerticeFim][indexOfVerticeInicio] = aresta;
+                if (matriz[indexOfVerticeFim][indexOfVerticeInicio] == null) {
+                    matriz[indexOfVerticeFim][indexOfVerticeInicio] = new ArrayList<Aresta>();
+                }
+
+                matriz[indexOfVerticeFim][indexOfVerticeInicio].add(aresta);
             }
         }
 
@@ -138,7 +157,7 @@ public class Graph implements IGraph {
     public Vertice removeVertice(Vertice vertice) {
         int indexOfVertice = vertices.indexOf(vertice);
 
-        Aresta[][] novaMatriz = new Aresta[qtdVertices - 1][qtdVertices - 1];
+        List[][] novaMatriz = new List[qtdVertices - 1][qtdVertices - 1];
 
         for (int i = 0; i < matriz.length; i++) {
             if (i == indexOfVertice) {
@@ -152,7 +171,9 @@ public class Graph implements IGraph {
                     continue;
                 }
 
-                if (i > indexOfVertice) {
+                else if (i > indexOfVertice && j > indexOfVertice) {
+                    novaMatriz[i - 1][j - 1] = matriz[i][j];
+                } if (i > indexOfVertice) {
                     novaMatriz[i - 1][j] = matriz[i][j];
                 } else if (j > indexOfVertice) {
                     novaMatriz[i][j - 1] = matriz[i][j];
@@ -172,7 +193,7 @@ public class Graph implements IGraph {
             for (int j = 0; j < matriz[i].length; j++) {
                 if (i == j) continue;
 
-                if (matriz[i][j] == aresta) {
+                if (matriz[i][j].contains(aresta)) {
                     matriz[i][j] = null;
                 }
             }
@@ -193,7 +214,9 @@ public class Graph implements IGraph {
                 if (i == j) continue;
 
                 if (matriz[i][j] != null) {
-                    arestas.add(matriz[i][j]);
+                    for (Object aresta : matriz[i][j]) {
+                        arestas.add((Aresta) aresta);
+                    }
                 }
             }
         }
@@ -210,19 +233,17 @@ public class Graph implements IGraph {
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
-                Aresta aresta = matriz[i][j];
+                List listOfArestas = matriz[i][j];
 
-                if (aresta == null) {
+                if (listOfArestas == null) {
                     continue;
                 }
 
-                if (aresta.getDirecionado()) {
-                    if (aresta.getVerticeInicio() == vertice) {
-                        arestas.add(aresta);
-                    }
-                } else {
-                    if (aresta.getVerticeInicio() == vertice || aresta.getVerticeFim() == vertice) {
-                        arestas.add(aresta);
+                for (Object aresta : arestas) {
+                    if (((Aresta) aresta).getDirecionado() && ((Aresta) aresta).getVerticeInicio() == vertice) {
+                        arestas.add((Aresta) aresta);
+                    } else if (((Aresta) aresta).getVerticeInicio() == vertice || ((Aresta) aresta).getVerticeFim() == vertice) {
+                        arestas.add((Aresta) aresta);
                     }
                 }
             }
@@ -240,16 +261,22 @@ public class Graph implements IGraph {
                     continue;
                 }
 
-                Aresta aresta = matriz[i][j];
-                if (aresta == null || arestaPrinted.contains(aresta)) {
+                List listOfArestas = matriz[i][j];
+
+                if (listOfArestas == null) {
                     continue;
                 }
 
-                arestaPrinted.add(aresta);
+                for (Object aresta : listOfArestas) {
+                    if (!arestaPrinted.contains((Aresta) aresta)) {
+                        arestaPrinted.add((Aresta) aresta);
 
-                Vertice vertice1 = aresta.getVerticeInicio();
-                Vertice vertice2 = aresta.getVerticeFim();
-                System.out.println(aresta.getValue() + " " + vertice1.getElement() + " " + vertice2.getElement() + " " + aresta.getDirecionado());
+                        Vertice vertice1 = ((Aresta) aresta).getVerticeInicio();
+                        Vertice vertice2 = ((Aresta) aresta).getVerticeFim();
+                        System.out.println(((Aresta) aresta).getValue() + " " + vertice1.getElement() + " " + vertice2.getElement() + " " + ((Aresta) aresta).getDirecionado());
+                    }
+                }
+
             }
         }
     }

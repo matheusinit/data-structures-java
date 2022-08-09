@@ -196,6 +196,27 @@ public class Main {
         dijkstra.handle(verticeA);
     }
 
+    public static void testAStar() {
+        Graph graph = new Graph();
+
+        Vertice verticeA = new Vertice("A");
+        Vertice verticeB = new Vertice("B");
+        Vertice verticeC = new Vertice("C");
+        Vertice verticeD = new Vertice("D");
+        Vertice verticeE = new Vertice("E");
+        Vertice verticeF = new Vertice("F");
+
+        graph.inserirAresta(verticeA, verticeB, 2, true);
+        graph.inserirAresta(verticeA, verticeC, 4, true);
+        graph.inserirAresta(verticeB, verticeC, 3, true);
+        graph.inserirAresta(verticeB, verticeE, 5, true);
+        graph.inserirAresta(verticeB, verticeD, 1, true);
+        graph.inserirAresta(verticeC, verticeD, 2, true);
+        graph.inserirAresta(verticeD, verticeE, 1, true);
+        graph.inserirAresta(verticeD, verticeF, 4, true);
+        graph.inserirAresta(verticeE, verticeF, 2, true);
+    }
+
     public static void main(String[] args) throws Exception {
 //        testGraph();
         testDijkstra();
