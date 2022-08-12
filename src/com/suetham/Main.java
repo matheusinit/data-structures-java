@@ -190,7 +190,8 @@ public class Main {
 
         Dijkstra dijkstra = new Dijkstra(graph);
 
-        dijkstra.handle(verticeA);
+        dijkstra.handle(verticeA, verticeF, 1);
+        graph.printMatriz();
     }
 
     public static void testAStar() {

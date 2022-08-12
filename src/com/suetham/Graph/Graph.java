@@ -12,7 +12,7 @@ public class Graph implements IGraph {
 
     public Graph() {
         matriz = new ArrayList[0][0];
-        vertices = new Vector<>();
+        vertices = new Vector<>(0);
         qtdVertices = 0;
     }
 
@@ -120,31 +120,31 @@ public class Graph implements IGraph {
                 }
             }
 
-            if (novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] == null) {
-                novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] = new ArrayList<Aresta>();
+            if (novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] == null) {
+                novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] = new ArrayList<Aresta>();
             }
 
-            novaMatriz[indexOfVerticeInicio][indexOfVerticeFim].add(aresta);
+            novaMatriz[indexOfVerticeFim][indexOfVerticeInicio].add(aresta);
             if (!direcionada) {
-                if (novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] == null) {
-                    novaMatriz[indexOfVerticeFim][indexOfVerticeInicio] = new ArrayList<Aresta>();
+                if (novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] == null) {
+                    novaMatriz[indexOfVerticeInicio][indexOfVerticeFim] = new ArrayList<Aresta>();
                 }
 
-                novaMatriz[indexOfVerticeFim][indexOfVerticeInicio].add(aresta);
+                novaMatriz[indexOfVerticeInicio][indexOfVerticeFim].add(aresta);
             }
 
             matriz = novaMatriz;
 
             qtdVertices += count;
         } else {
-            if (matriz[indexOfVerticeInicio][indexOfVerticeFim] == null) {
-                matriz[indexOfVerticeInicio][indexOfVerticeFim] = new ArrayList<Aresta>();
+            if (matriz[indexOfVerticeFim][indexOfVerticeInicio] == null) {
+                matriz[indexOfVerticeFim][indexOfVerticeInicio] = new ArrayList<Aresta>();
             }
 
-            matriz[indexOfVerticeInicio][indexOfVerticeFim].add(aresta);
+            matriz[indexOfVerticeFim][indexOfVerticeInicio].add(aresta);
             if (!direcionada) {
-                if (matriz[indexOfVerticeFim][indexOfVerticeInicio] == null) {
-                    matriz[indexOfVerticeFim][indexOfVerticeInicio] = new ArrayList<Aresta>();
+                if (matriz[indexOfVerticeInicio][indexOfVerticeFim] == null) {
+                    matriz[indexOfVerticeInicio][indexOfVerticeFim] = new ArrayList<Aresta>();
                 }
 
                 matriz[indexOfVerticeFim][indexOfVerticeInicio].add(aresta);
@@ -282,6 +282,36 @@ public class Graph implements IGraph {
                 }
 
             }
+        }
+    }
+
+
+    public void printMatriz() {
+        System.out.print("  | ");
+        for (Vertice vertice : vertices) {
+            System.out.print(vertice.getElement() + " | ");
+        }
+
+        System.out.println();
+
+        for (int i = 0; i < matriz.length; i++) {
+            System.out.print(vertices.get(i) + " | ");
+            for (int j = 0; j < matriz[i].length; j++) {
+                List cell = matriz[i][j];
+
+                String value = "";
+
+                if (cell == null) {
+                    value = "-";
+                } else {
+                    value = ((Aresta) cell.get(0)).getValue().toString();
+//                    value = "1";
+                }
+//
+                System.out.print(value + " | ");
+            }
+
+            System.out.println();
         }
     }
 }

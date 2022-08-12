@@ -1,4 +1,4 @@
-package com.suetham.AStarAlgorithm;
+package com.suetham.Dijkstra;
 
 public class Coordinate {
     private int x;
