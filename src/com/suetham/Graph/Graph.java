@@ -239,11 +239,15 @@ public class Graph implements IGraph {
                     continue;
                 }
 
-                for (Object aresta : arestas) {
-                    if (((Aresta) aresta).getDirecionado() && ((Aresta) aresta).getVerticeInicio() == vertice) {
-                        arestas.add((Aresta) aresta);
-                    } else if (((Aresta) aresta).getVerticeInicio() == vertice || ((Aresta) aresta).getVerticeFim() == vertice) {
-                        arestas.add((Aresta) aresta);
+                for (Object aresta : listOfArestas) {
+                    System.out.println((Aresta) aresta);
+
+                    Aresta currentAresta = (Aresta) aresta;
+
+                    if (currentAresta.getDirecionado() && currentAresta.getVerticeInicio() == vertice) {
+                        arestas.add(currentAresta);
+                    } else if (currentAresta.getVerticeInicio() == vertice || currentAresta.getVerticeFim() == vertice) {
+                        arestas.add(currentAresta);
                     }
                 }
             }
