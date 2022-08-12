@@ -36,11 +36,10 @@ public class Dijkstra {
             visitedVertices.put(verticeName, details);
         }
 
-        System.out.println(visitedVertices.toString());
         HashMap<String, Object> verticeInicio = (HashMap<String, Object>) visitedVertices.get(vertice.getElement().toString());
         verticeInicio.put("caminho_mais_curto", 0);
 
-        Vertice current = vertice;
+//        Vertice current = vertice;
         Integer caminhoCusto = 0;
 
         while (vertice != null) {
@@ -50,11 +49,6 @@ public class Dijkstra {
 
             List<Aresta> arestasIncidentes = graph.arestasIncidentes(vertice);
 
-            for (Aresta aresta : arestasIncidentes) {
-                System.out.print(aresta.getVerticeFim() + " ");
-            }
-            System.out.println();
-
             // Para cada aresta incidente, atualizar o seu custo e define o próximo vertice a trabalhar
             for (Aresta aresta : arestasIncidentes) {
                 Integer arestaValue = (Integer) aresta.getValue();
@@ -62,10 +56,10 @@ public class Dijkstra {
                 HashMap<String, Object> details = (HashMap) visitedVertices.get(aresta.getVerticeFim().toString());
 
                 HashMap verticeDetails = (HashMap) visitedVertices.get(vertice.toString());
-                caminhoCusto = (Integer) verticeDetails.get("caminho_mais_curto");
+                caminhoCusto = (Integer) verticeDetails.get("caminho_mais_curto") + arestaValue;
 
-                if (arestaValue + caminhoCusto < (Integer) details.get("caminho_mais_curto")) {
-                    details.put("caminho_mais_curto", caminhoCusto + arestaValue);
+                if (caminhoCusto < (Integer) details.get("caminho_mais_curto")) {
+                    details.put("caminho_mais_curto", caminhoCusto);
                 }
 
                 if (arestaValue < min) {

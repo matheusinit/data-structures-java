@@ -40,4 +40,8 @@ public class Aresta {
     public boolean getDirecionado() {
         return this.direcionado;
     }
+
+    public String toString() {
+        return verticeInicio.getElement() + " " + verticeFim.getElement() + " " + value + " " + direcionado;
+    }
 }

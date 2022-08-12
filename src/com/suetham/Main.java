@@ -152,7 +152,7 @@ public class Main {
         graph.inserirAresta(verticeA, verticeC, 4, true);
         graph.inserirAresta(verticeB, verticeC, 3, true);
         graph.inserirAresta(verticeB, verticeE, 5, true);
-        graph.inserirAresta(verticeB, verticeD, 1, false);
+        graph.inserirAresta(verticeB, verticeD, 1, true);
         graph.inserirAresta(verticeC, verticeD, 2, true);
         graph.inserirAresta(verticeD, verticeE, 1, true);
         graph.inserirAresta(verticeD, verticeF, 4, true);
@@ -160,15 +160,12 @@ public class Main {
 
 //        System.out.println(graph.éAdjacente(vertice, vertice));
 
-        List<Aresta> arestas = graph.arestasIncidentes(verticeA);
+        List<Aresta> arestas = graph.arestasIncidentes(verticeB);
 
         for (Aresta aresta: arestas) {
             System.out.println(aresta.getVerticeInicio() + " " + aresta.getVerticeFim());
         }
 
-        System.out.println(graph.éAdjacente(verticeB, verticeF));
-
-//        graph.printGraph();
     }
 
     public static void testDijkstra() {

@@ -240,13 +240,13 @@ public class Graph implements IGraph {
                 }
 
                 for (Object aresta : listOfArestas) {
-                    System.out.println((Aresta) aresta);
-
                     Aresta currentAresta = (Aresta) aresta;
 
                     if (currentAresta.getDirecionado() && currentAresta.getVerticeInicio() == vertice) {
                         arestas.add(currentAresta);
-                    } else if (currentAresta.getVerticeInicio() == vertice || currentAresta.getVerticeFim() == vertice) {
+                    } else if (
+                            (currentAresta.getVerticeInicio() == vertice || currentAresta.getVerticeFim() == vertice)
+                                    && !currentAresta.getDirecionado()) {
                         arestas.add(currentAresta);
                     }
                 }
