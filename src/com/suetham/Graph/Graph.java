@@ -43,10 +43,14 @@ public class Graph implements IGraph {
 
                 if (listOfArestas == null) continue;
 
-                if (listOfArestas.contains(vertice1) && listOfArestas.contains(vertice2)) {
-                    return true;
-                } else if (listOfArestas.contains(vertice2) && listOfArestas.contains(vertice1)) {
-                    return true;
+                for (Object aresta : listOfArestas) {
+                    Aresta arestaInType = (Aresta) aresta;
+
+                    if (arestaInType.getVerticeInicio() == vertice1 && arestaInType.getVerticeFim() == vertice2) {
+                        return true;
+                    } else if (arestaInType.getVerticeInicio() == vertice2 && arestaInType.getVerticeFim() == vertice1) {
+                        return true;
+                    }
                 }
             }
         }
@@ -242,11 +246,11 @@ public class Graph implements IGraph {
                 for (Object aresta : listOfArestas) {
                     Aresta currentAresta = (Aresta) aresta;
 
-                    if (currentAresta.getDirecionado() && currentAresta.getVerticeInicio() == vertice) {
+                    if (currentAresta.getDirecionado() && currentAresta.getVerticeInicio() == vertice && !arestas.contains(currentAresta)) {
                         arestas.add(currentAresta);
                     } else if (
                             (currentAresta.getVerticeInicio() == vertice || currentAresta.getVerticeFim() == vertice)
-                                    && !currentAresta.getDirecionado()) {
+                                    && !currentAresta.getDirecionado() && !arestas.contains(currentAresta)) {
                         arestas.add(currentAresta);
                     }
                 }
